@@ -47,7 +47,29 @@ Traditional rule-based retention methods or retrospective exit interviews identi
 
 ---
 
-## 🛠️ 5. Technology Stack
+## 📸 5. Application Screenshots & Demo
+
+The RetainIQ analytical interface provides a complete decision-support workflow for banking relationship teams:
+
+### 1. Main Dashboard & Customer Profile Input
+![Main Dashboard - Customer Profile Input](screenshots/01_dashboard_inputs.png)
+*Interactive customer profile and account information forms allowing analysts to simulate customer demographics, credit attributes, tenure, and relationship characteristics.*
+
+### 2. Prediction Result & Risk Assessment
+![Prediction Result & Risk Assessment](screenshots/02_prediction_result.png)
+*Real-time risk scoring displaying calibrated exit probability (e.g., 95.84%), categorical status (`Likely to Exit`), risk tier (`High`), and essential customer profile snapshots.*
+
+### 3. SHAP Explainability & Feature Contribution
+![SHAP Explainability](screenshots/03_shap_explainability.png)
+*Local SHAP feature attributions ranking the top individual drivers (such as product count, age, geography, and member engagement) that increase or decrease churn likelihood for the evaluated customer.*
+
+### 4. Model Performance & Benchmarks
+![Model Performance](screenshots/04_model_performance.png)
+*In-dashboard model scorecard highlighting verified performance metrics on the held-out test dataset (89.90% Accuracy, 80.47% Precision, 66.67% Recall, 72.92% F1, and 93.35% ROC-AUC).*
+
+---
+
+## 🛠️ 6. Technology Stack
 
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
@@ -62,7 +84,7 @@ Traditional rule-based retention methods or retrospective exit interviews identi
 
 ---
 
-## 🏗️ 6. Project Architecture
+## 🏗️ 7. Project Architecture
 
 ```
                   +-----------------------------------+
@@ -109,13 +131,18 @@ Traditional rule-based retention methods or retrospective exit interviews identi
 
 ---
 
-## 📁 7. Project Structure
+## 📁 8. Project Structure
 
 ```text
 HCL_Project/
 ├── .gitignore                   # Version control exclusions (ignores caches, venvs, envs)
 ├── requirements.txt             # Minimal, pinned dependencies required by the project
 ├── README.md                    # Comprehensive project documentation
+├── screenshots/                 # Application screenshots for GitHub README display
+│   ├── 01_dashboard_inputs.png  # Customer demographic and account input form
+│   ├── 02_prediction_result.png # Risk classification, probability bar & snapshot
+│   ├── 03_shap_explainability.png # Local SHAP feature influence breakdown
+│   └── 04_model_performance.png # Held-out test performance metric cards
 ├── Data/
 │   └── train (2).csv            # Primary banking dataset (15,000 customer records)
 ├── model/
@@ -128,12 +155,12 @@ HCL_Project/
 ├── app/
 │   └── streamlit_app.py         # Streamlit analytical user interface
 └── notebook/
-    └── Savings_acoount_closure_prediction.ipynb # Complete EDA, modeling & evaluation notebook
+    └── Savings_account_closure_prediction.ipynb # Complete EDA, modeling & evaluation notebook
 ```
 
 ---
 
-## 📊 8. Dataset Description
+## 📊 9. Dataset Description
 
 The project utilizes retail banking customer records (`Data/train (2).csv`) comprising **15,000 customer instances** across **14 attributes**:
 
@@ -158,7 +185,7 @@ The project utilizes retail banking customer records (`Data/train (2).csv`) comp
 
 ---
 
-## 🧹 9. Data Preprocessing
+## 🧹 10. Data Preprocessing
 
 1. **Identifier Removal**: Non-predictive identification variables (`id`, `CustomerId`, `Surname`) were removed prior to model ingestion.
 2. **Missing Value Verification**: The dataset was verified for nulls; no synthetic imputation was required.
@@ -169,7 +196,7 @@ The project utilizes retail banking customer records (`Data/train (2).csv`) comp
 
 ---
 
-## 🔍 10. Exploratory Data Analysis (EDA)
+## 🔍 11. Exploratory Data Analysis (EDA)
 
 Key patterns uncovered during data exploration:
 - **Age as Primary Driver**: Older customers exhibited substantially higher exit rates. The likelihood of closure rises significantly between ages 45 and 65.
@@ -180,7 +207,7 @@ Key patterns uncovered during data exploration:
 
 ---
 
-## ⚙️ 11. Feature Engineering
+## ⚙️ 12. Feature Engineering
 
 To capture non-linear dynamics and interaction effects, 6 domain features were engineered in `preprocessing/feature_engineering.py`:
 
@@ -210,7 +237,7 @@ Combined with one-hot encoded demographics, the final model trains on **16 align
 
 ---
 
-## 🧪 12. Models Evaluated
+## 🧪 13. Models Evaluated
 
 The notebook benchmarks multiple classification paradigms:
 1. **Logistic Regression**: Linear baseline with standard scaling. Provided foundational benchmark but struggled with non-linear churn boundaries.
@@ -221,7 +248,7 @@ The notebook benchmarks multiple classification paradigms:
 
 ---
 
-## 🏆 13. Final Model & Evaluation Metrics
+## 🏆 14. Final Model & Evaluation Metrics
 
 The **Feature-Engineered XGBoost Classifier** was selected as the final production model. Performance evaluated strictly on the **held-out test split**:
 
@@ -235,7 +262,7 @@ The **Feature-Engineered XGBoost Classifier** was selected as the final producti
 
 ---
 
-## 💡 14. SHAP Explainability
+## 💡 15. SHAP Explainability
 
 RetainIQ integrates **SHAP (SHapley Additive exPlanations)** using `shap.TreeExplainer`:
 - **Local Interpretability**: Quantifies exactly how much each individual feature shifted the baseline log-odds for a given customer.
@@ -249,7 +276,7 @@ RetainIQ integrates **SHAP (SHapley Additive exPlanations)** using `shap.TreeExp
 
 ---
 
-## 🔌 15. FastAPI Service & Health Check
+## 🔌 16. FastAPI Service & Health Check
 
 The backend is implemented with **FastAPI** (`api/main.py`), offering real-time prediction and interactive API documentation at `http://127.0.0.1:8000/docs`.
 
@@ -271,7 +298,7 @@ The backend is implemented with **FastAPI** (`api/main.py`), offering real-time 
 
 ---
 
-## 💻 16. Streamlit Application
+## 💻 17. Streamlit Application
 
 The frontend dashboard (`app/streamlit_app.py`) provides an interactive interface for bank staff:
 - **Demographic Inputs**: Credit score, age, country, gender, tenure, product count.
@@ -286,7 +313,7 @@ The frontend dashboard (`app/streamlit_app.py`) provides an interactive interfac
 
 ---
 
-## 🚀 17. How to Run Locally
+## 🚀 18. How to Run Locally
 
 ### Prerequisites
 - Python 3.10, 3.11, or 3.12 installed.
@@ -333,7 +360,7 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## 📬 18. Example API Request & Response
+## 📬 19. Example API Request & Response
 
 ### Example Request (`POST /predict`)
 ```json
@@ -394,7 +421,7 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## ⚠️ 19. Disclaimers & Assumptions
+## ⚠️ 20. Disclaimers & Assumptions
 
 - **Target Definition**: The target variable `Exited` indicates whether a savings account was closed or the customer discontinued their relationship.
 - **Statistical Model Outputs**: Model predictions represent estimated likelihoods computed from historical patterns, not guaranteed future outcomes.
@@ -403,7 +430,7 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## ⚠️ 20. Limitations
+## ⚠️ 21. Limitations
 
 - **Geographic Representation**: The training data is sampled from customers residing in France, Germany, and Spain. Generalization to other banking jurisdictions may require domain retraining.
 - **Feature Set Scope**: The model is based on static demographic and aggregated account balances. Real-time transaction sequences or customer service sentiment are not captured in the current feature set.
@@ -411,7 +438,7 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## 🔮 21. Future Enhancements
+## 🔮 22. Future Enhancements
 
 - **Relational Storage**: Connect PostgreSQL database for persistent logging of predictions and audit history.
 - **Containerization & CI/CD**: Package API and UI into lightweight Docker containers with GitHub Actions deployment workflows.
@@ -421,7 +448,7 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## 👤 22. Author
+## 👤 23. Author
 
 **RetainIQ Development Team**  
 *Enterprise Customer Analytics & Machine Learning Project*
