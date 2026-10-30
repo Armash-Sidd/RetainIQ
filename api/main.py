@@ -22,22 +22,32 @@ sys.path.append(PROJECT_ROOT)
 # FEATURE ENGINEERING
 # ============================================================
 
-from preprocessing.feature_engineering import engineer_features
+from src.feature_engineering import engineer_features
 
 
 # ============================================================
 # LOAD MODEL AND FEATURES
 # ============================================================
 
-MODEL_PATH = os.path.join(
-    PROJECT_ROOT,
-    "model",
-    "xgb_model.pkl"
+MODEL_DIR = (
+    "models"
+    if os.path.exists(os.path.join(PROJECT_ROOT, "models"))
+    else "model"
+)
+
+# Prefer final_model.pkl, fall back to xgb_model.pkl for backward compatibility
+FINAL_MODEL_FILE = os.path.join(PROJECT_ROOT, MODEL_DIR, "final_model.pkl")
+XGB_MODEL_FILE = os.path.join(PROJECT_ROOT, MODEL_DIR, "xgb_model.pkl")
+
+MODEL_PATH = (
+    FINAL_MODEL_FILE
+    if os.path.exists(FINAL_MODEL_FILE)
+    else XGB_MODEL_FILE
 )
 
 FEATURE_PATH = os.path.join(
     PROJECT_ROOT,
-    "model",
+    MODEL_DIR,
     "feature_names.pkl"
 )
 

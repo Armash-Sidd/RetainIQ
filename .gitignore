@@ -61,6 +61,7 @@ logs/
 tmp/
 temp/
 *.tmp
+~$*
 .pytest_cache/
 .coverage
 htmlcov/
@@ -69,6 +70,12 @@ htmlcov/
 # RetainIQ Model Artifacts Whitelist
 # Explicitly keep trained models and serialized feature lists
 # ============================================================
+!models/
+!models/final_model.pkl
+!models/xgb_model.pkl
+!models/feature_names.pkl
+!models/model_metadata.json
+!models/experiment_log.csv
 !model/
 !model/xgb_model.pkl
 !model/feature_names.pkl

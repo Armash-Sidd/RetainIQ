@@ -89,7 +89,7 @@ The RetainIQ analytical interface provides a complete decision-support workflow 
 ```
                   +-----------------------------------+
                   |         Retail Banking Data       |
-                  |          Data/train (2).csv       |
+                  |     data/raw/bank_churn_raw.csv   |
                   +-----------------+-----------------+
                                     |
                                     v
@@ -108,7 +108,7 @@ The RetainIQ analytical interface provides a complete decision-support workflow 
                     |                               |
                     v                               v
          +----------+----------+         +----------+----------+
-         |   model/xgb_model   |         | feature_names.pkl   |
+         |   models/xgb_model  |         | feature_names.pkl   |
          +----------+----------+         +----------+----------+
                     |                               |
                     +---------------+---------------+
@@ -138,31 +138,51 @@ HCL_Project/
 ├── .gitignore                   # Version control exclusions (ignores caches, venvs, envs)
 ├── requirements.txt             # Minimal, pinned dependencies required by the project
 ├── README.md                    # Comprehensive project documentation
+├── config/
+│   └── config.yaml              # Centralized hyperparameters, seeds & project paths
 ├── screenshots/                 # Application screenshots for GitHub README display
 │   ├── 01_dashboard_inputs.png  # Customer demographic and account input form
 │   ├── 02_prediction_result.png # Risk classification, probability bar & snapshot
 │   ├── 03_shap_explainability.png # Local SHAP feature influence breakdown
 │   └── 04_model_performance.png # Held-out test performance metric cards
-├── Data/
-│   └── train (2).csv            # Primary banking dataset (15,000 customer records)
-├── model/
-│   ├── xgb_model.pkl            # Serialized final Feature-Engineered XGBoost classifier
-│   └── feature_names.pkl        # Ordered list of training feature names for alignment
+├── data/
+│   ├── raw/
+│   │   └── bank_churn_raw.csv   # Primary banking dataset (15,000 customer records)
+│   ├── processed/               # Processed/split datasets directory
+│   └── README.md                # Data dictionary & dataset documentation
+├── models/
+│   ├── final_model.pkl          # Primary serialized winning classifier
+│   ├── xgb_model.pkl            # Backward-compatible serialized model
+│   ├── feature_names.pkl        # Ordered list of training feature names for alignment
+│   ├── model_metadata.json      # Complete hyperparameter & evaluation metadata
+│   └── experiment_log.csv       # Multi-model CV and test benchmark tracking log
+├── src/
+│   ├── __init__.py              # Core ML module package initialization
+│   ├── data_loader.py           # Ingestion, schema validation & train/test splitting
+│   ├── feature_engineering.py   # Domain feature transformations & sklearn transformer
+│   ├── preprocessing.py         # Leakage-safe ColumnTransformer preprocessing pipeline
+│   ├── tuning.py                # Hyperparameter tuning with StratifiedKFold
+│   ├── train.py                 # Multi-model training, benchmarking & evaluation pipeline
+│   └── utils.py                 # Configuration loader, seed setter & logging utilities
+├── tests/
+│   └── __init__.py              # Test suite initialization
+├── reports/
+│   └── figures/                 # Evaluation figures & artifact outputs
 ├── preprocessing/
 │   └── feature_engineering.py   # Domain feature transformation functions
 ├── api/
 │   └── main.py                  # FastAPI application with prediction & SHAP explanation
 ├── app/
 │   └── streamlit_app.py         # Streamlit analytical user interface
-└── notebook/
-    └── Savings_account_closure_prediction.ipynb # Complete EDA, modeling & evaluation notebook
+└── notebooks/
+    └── 01_EDA.ipynb             # Complete EDA, modeling & evaluation notebook
 ```
 
 ---
 
 ## 📊 9. Dataset Description
 
-The project utilizes retail banking customer records (`Data/train (2).csv`) comprising **15,000 customer instances** across **14 attributes**:
+The project utilizes retail banking customer records (`data/raw/bank_churn_raw.csv`) comprising **15,000 customer instances** across **14 attributes**:
 
 | Attribute | Data Type | Description |
 | :--- | :--- | :--- |
@@ -233,7 +253,7 @@ def engineer_features(df):
     return df
 ```
 
-Combined with one-hot encoded demographics, the final model trains on **16 aligned features** saved in `model/feature_names.pkl`.
+Combined with one-hot encoded demographics, the final model trains on **16 aligned features** saved in `models/feature_names.pkl`.
 
 ---
 

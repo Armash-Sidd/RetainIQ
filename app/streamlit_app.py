@@ -685,7 +685,40 @@ if predict_button:
                     "Activity × Products",
 
                 "AgeActivityInteraction":
-                    "Age × Activity"
+                    "Age × Activity",
+
+                "BalanceToSalaryRatio":
+                    "Balance to Salary Ratio",
+
+                "SalaryPerProduct":
+                    "Salary per Product",
+
+                "AgeBin_Young":
+                    "Young Cohort (<30)",
+
+                "AgeBin_Senior":
+                    "Senior Cohort (≥50)",
+
+                "TenurePerAge":
+                    "Tenure / Age Ratio",
+
+                "IsNewCustomer":
+                    "New Customer (≤1 yr)",
+
+                "IsLoyalCustomer":
+                    "Loyal Customer (≥7 yrs)",
+
+                "LowCreditScore":
+                    "Low Credit Score (<500)",
+
+                "HighCreditScore":
+                    "High Credit Score (≥750)",
+
+                "HasManyProducts":
+                    "Multiple Products (≥3)",
+
+                "EngagementScore":
+                    "Engagement Score"
             }
 
 

@@ -1,0 +1,7 @@
+timestamp,model,cv_accuracy,cv_precision,cv_recall,cv_f1,cv_roc_auc,test_accuracy,test_precision,test_recall,test_f1,test_roc_auc,best_parameters
+2026-10-31 01:05:53,LogisticRegression,0.8614,0.616,0.8528,0.7152,0.9326,,,,,,
+2026-10-31 01:05:53,DecisionTree,0.8437,0.5885,0.776,0.6693,0.8437,,,,,,
+2026-10-31 01:05:53,RandomForest,0.8776,0.6621,0.8164,0.7311,0.9305,,,,,,
+2026-10-31 01:05:53,XGBoost_Baseline,0.8979,0.789,0.6815,0.7312,0.9265,,,,,,
+2026-10-31 01:05:53,XGBoost_Imbalanced,0.8813,0.6808,0.7874,0.7301,0.9249,,,,,,
+2026-10-31 01:05:53,XGBoost_Tuned,0.882,0.6743,0.8156,0.7382,0.9353,0.8737,0.6519,0.817,0.7252,0.9335,"{""subsample"": 1.0, ""scale_pos_weight"": 3, ""n_estimators"": 100, ""max_depth"": 4, ""learning_rate"": 0.05, ""colsample_bytree"": 1.0}"

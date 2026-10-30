@@ -1,0 +1,54 @@
+project:
+  name: "RetainIQ"
+  version: "1.0.0"
+  random_state: 42
+
+data:
+  raw_path: "data/raw/bank_churn_raw.csv"
+  processed_dir: "data/processed"
+  test_size: 0.20
+  random_state: 42
+
+features:
+  target_column: "Exited"
+
+  drop_columns:
+    - "id"
+    - "CustomerId"
+    - "Surname"
+
+  categorical_columns:
+    - "Geography"
+    - "Gender"
+
+training:
+  random_state: 42
+  cv_folds: 5
+  scoring_metric: "roc_auc"
+
+  class_imbalance:
+    strategy: "scale_pos_weight"
+
+  models:
+
+    logistic_regression:
+      max_iter: 1000
+
+    decision_tree:
+      max_depth: 10
+
+    random_forest:
+      n_estimators: 200
+      max_depth: 10
+
+    xgboost:
+      n_estimators: 200
+      max_depth: 6
+      learning_rate: 0.1
+      scale_pos_weight: 3.9
+      eval_metric: "logloss"
+
+paths:
+  model_dir: "models"
+  reports_dir: "reports"
+  figures_dir: "reports/figures"
