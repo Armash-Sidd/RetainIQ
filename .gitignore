@@ -73,6 +73,7 @@ docs/
 *.docx
 *.doc
 *.zip
+*.pdf
 
 # ============================================================
 # RetainIQ Model Artifacts Whitelist
