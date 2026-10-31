@@ -39,33 +39,63 @@ Traditional rule-based retention methods or retrospective exit interviews identi
 
 ## ✨ 4. Key Features
 
-- **High-Performance Predictive Engine**: Final XGBoost model trained on domain-specific engineered features achieving a **93.35% ROC-AUC** and **89.90% Accuracy** on held-out test data.
-- **Individualized SHAP Explanations**: Every prediction includes the top 6 contributing factors explaining *why* the model assigned that exit probability.
-- **RESTful API Service**: Built on FastAPI with strict Pydantic schemas, auto-generated OpenAPI/Swagger documentation, and sub-100ms inference latency.
-- **Interactive Decision Dashboard**: Streamlit web app with dynamic risk categorizations (Low, Moderate, High), customer profile snapshots, and feature importance gauges.
-- **Modular Codebase**: Clean separation between data preprocessing, model persistence, API serving, and user interface.
+- **High-Performance Predictive Engine**: Final XGBoost model trained on domain-specific engineered features achieving a **93.35% ROC-AUC** and **87.37% Accuracy** on held-out test data ($N = 3,000$).
+- **High Sensitivity on Minority Churn**: Captures **81.70% of actual customer exits** (500 out of 612 churners), balancing business retention ROI.
+- **Individualized SHAP Explanations**: Every prediction includes the top contributing factors with exact Shapley values and directional impact explaining *why* the model assigned that exit probability.
+- **Hardened FastAPI REST Service**: Built with strict Pydantic V2 schema validation, CORS middleware, asynchronous audit logging, and sub-100ms inference latency.
+- **Interactive Multi-Tab Dashboard**: Streamlit interface supporting single-customer assessment, high-throughput batch portfolio scoring, and dynamic visualization of publication-grade Phase 5 evaluation figures.
+- **Production MLOps & Telemetry**: Built-in runtime telemetry tracking request throughput, latency percentiles, and statistical covariate data drift detection.
+- **Containerization & CI/CD**: Fully containerized with multi-stage Docker builds, Docker Compose orchestration, and automated GitHub Actions testing (26 unit & integration tests passing).
 
 ---
 
-## 📸 5. Application Screenshots & Demo
+## 📸 5. Application Screenshots & Demonstration Visuals
 
-The RetainIQ analytical interface provides a complete decision-support workflow for banking relationship teams:
+The RetainIQ analytical interface and MLOps deployment provide a complete decision-support workflow for banking relationship teams:
 
 ### 1. Main Dashboard & Customer Profile Input
-![Main Dashboard - Customer Profile Input](screenshots/01_dashboard_inputs.png)
+![Main Dashboard - Customer Profile Input](screenshots/01_streamlit_dashboard_overview.png)
 *Interactive customer profile and account information forms allowing analysts to simulate customer demographics, credit attributes, tenure, and relationship characteristics.*
 
-### 2. Prediction Result & Risk Assessment
-![Prediction Result & Risk Assessment](screenshots/02_prediction_result.png)
-*Real-time risk scoring displaying calibrated exit probability (e.g., 95.84%), categorical status (`Likely to Exit`), risk tier (`High`), and essential customer profile snapshots.*
+### 2. Low-Risk Customer Prediction & Retention Snapshot
+![Low-Risk Prediction](screenshots/02_low_risk_prediction.png)
+*Real-time risk scoring for a young active customer displaying calibrated exit probability (1.96%), categorical status (`Likely to Stay`), risk tier (`Low Risk`), and profile snapshots.*
 
-### 3. SHAP Explainability & Feature Contribution
-![SHAP Explainability](screenshots/03_shap_explainability.png)
-*Local SHAP feature attributions ranking the top individual drivers (such as product count, age, geography, and member engagement) that increase or decrease churn likelihood for the evaluated customer.*
+### 3. High-Risk Customer Prediction & Urgent Intervention Alert
+![High-Risk Prediction](screenshots/03_high_risk_prediction.png)
+*Immediate critical alert for a high-value depositor showing calibrated exit probability (98.46%), categorical status (`Likely to Exit`), risk tier (`High Risk`), and relationship manager action protocols.*
 
-### 4. Model Performance & Benchmarks
-![Model Performance](screenshots/04_model_performance.png)
-*In-dashboard model scorecard highlighting verified performance metrics on the held-out test dataset (89.90% Accuracy, 80.47% Precision, 66.67% Recall, 72.92% F1, and 93.35% ROC-AUC).*
+### 4. Local SHAP Explainability & Directional Attributions
+![SHAP Explainability](screenshots/04_shap_explanation.png)
+*Local SHAP feature attributions ranking the individual drivers (age penalty, country baseline, single-product risk) that increase or decrease churn likelihood for the evaluated customer.*
+
+### 5. Model Scorecard & Evaluation Artifacts
+![Model Performance Scorecard](screenshots/05_model_metrics_scorecard.png)
+*In-dashboard model scorecard highlighting verified performance metrics on the held-out test dataset (87.37% Accuracy, 65.19% Precision, 81.70% Recall, 72.52% F1, and 93.35% ROC-AUC) alongside confusion matrix and cross-validation benchmarks.*
+
+### 6. FastAPI Interactive OpenAPI Swagger Documentation (`/docs`)
+![FastAPI Swagger UI](screenshots/06_fastapi_swagger_docs.png)
+*Auto-generated interactive Swagger UI exposing root index, system health, model metadata, single prediction, batch scoring, telemetry, and data drift monitoring endpoints.*
+
+### 7. Real-Time Prediction API Request & Response Body
+![Predict API Response](screenshots/07_predict_api_response.png)
+*Structured JSON request payload and response from `POST /predict`, including calibrated probability, discrete decision, confidence, and top ranked SHAP explanations.*
+
+### 8. Real-Time Inference Telemetry & Audit Stream
+![Monitoring Telemetry](screenshots/08_monitoring_telemetry.png)
+*MLOps dashboard showing real-time request volume, latency percentiles (14.2ms avg), live risk tier distributions, and thread-safe rolling audit logs.*
+
+### 9. Covariate Data Drift & Statistical Shift Monitoring
+![Data Drift Detection](screenshots/09_drift_detection.png)
+*Statistical comparison between training baseline statistics and serving windows using Z-score standardized deviations to flag feature shifts in production.*
+
+### 10. Automated Test Suite (26/26 Tests Passing)
+![Automated Test Suite Passing](screenshots/10_test_suite_passing.png)
+*Complete test execution log verifying API endpoints, preprocessing pipeline, model artifacts, evaluation figures, and monitoring systems passing 100% in 0.36 seconds.*
+
+### 11. Multi-Container Docker Compose Deployment
+![Docker Compose Deployment](screenshots/11_docker_compose_services.png)
+*Multi-container microservice architecture showing isolated `retainiq-api` and `retainiq-app` containers running with automated health checks.*
 
 ---
 
@@ -135,47 +165,76 @@ The RetainIQ analytical interface provides a complete decision-support workflow 
 
 ```text
 HCL_Project/
-├── .gitignore                   # Version control exclusions (ignores caches, venvs, envs)
-├── requirements.txt             # Minimal, pinned dependencies required by the project
-├── README.md                    # Comprehensive project documentation
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # Automated CI/CD workflow running test suites on push/PR
 ├── config/
 │   └── config.yaml              # Centralized hyperparameters, seeds & project paths
-├── screenshots/                 # Application screenshots for GitHub README display
-│   ├── 01_dashboard_inputs.png  # Customer demographic and account input form
-│   ├── 02_prediction_result.png # Risk classification, probability bar & snapshot
-│   ├── 03_shap_explainability.png # Local SHAP feature influence breakdown
-│   └── 04_model_performance.png # Held-out test performance metric cards
 ├── data/
 │   ├── raw/
 │   │   └── bank_churn_raw.csv   # Primary banking dataset (15,000 customer records)
 │   ├── processed/               # Processed/split datasets directory
 │   └── README.md                # Data dictionary & dataset documentation
 ├── models/
-│   ├── final_model.pkl          # Primary serialized winning classifier
+│   ├── final_model.pkl          # Primary serialized winning classifier (XGBoost_Tuned)
 │   ├── xgb_model.pkl            # Backward-compatible serialized model
-│   ├── feature_names.pkl        # Ordered list of training feature names for alignment
+│   ├── feature_names.pkl        # Ordered list of 27 training feature names for alignment
 │   ├── model_metadata.json      # Complete hyperparameter & evaluation metadata
 │   └── experiment_log.csv       # Multi-model CV and test benchmark tracking log
+├── reports/
+│   ├── figures/                 # 9 publication-grade evaluation plots (PNG @ 150 DPI)
+│   │   ├── confusion_matrix.png # Confusion matrix counts and proportions
+│   │   ├── roc_curve.png        # ROC curve with verified AUC = 0.9335
+│   │   ├── pr_curve.png         # Precision-Recall curve with AP = 0.8168
+│   │   ├── feature_importance.png # Tree feature importances (top 20)
+│   │   ├── shap_summary.png     # Global SHAP beeswarm summary plot
+│   │   ├── shap_feature_importance.png # Global mean |SHAP| ranking bar chart
+│   │   ├── shap_local_example.png # Individual local SHAP waterfall attribution
+│   │   ├── model_comparison.png # 5-fold CV benchmark grouped bar chart
+│   │   └── threshold_analysis.png # Decision threshold precision-recall sensitivity
+│   ├── threshold_analysis.csv   # Threshold cutoff evaluation table
+│   └── evaluation_report.md     # 12-section comprehensive model evaluation report
+├── screenshots/                 # High-resolution application & MLOps demonstration visuals
+│   ├── 01_streamlit_dashboard_overview.png # Streamlit UI overview & customer inputs
+│   ├── 02_low_risk_prediction.png          # Low-risk prediction & retention profile
+│   ├── 03_high_risk_prediction.png         # High-risk critical intervention alert
+│   ├── 04_shap_explanation.png             # Local SHAP waterfall & directional factors
+│   ├── 05_model_metrics_scorecard.png      # Held-out scorecard & CV benchmark table
+│   ├── 06_fastapi_swagger_docs.png         # FastAPI interactive OpenAPI Swagger UI
+│   ├── 07_predict_api_response.png         # Real-time JSON request and response
+│   ├── 08_monitoring_telemetry.png         # Real-time latency & risk distribution stream
+│   ├── 09_drift_detection.png              # Statistical covariate data drift evaluation
+│   ├── 10_test_suite_passing.png           # 26/26 automated unit & integration tests
+│   └── 11_docker_compose_services.png      # Multi-container Docker deployment status
 ├── src/
 │   ├── __init__.py              # Core ML module package initialization
 │   ├── data_loader.py           # Ingestion, schema validation & train/test splitting
-│   ├── feature_engineering.py   # Domain feature transformations & sklearn transformer
+│   ├── feature_engineering.py   # Domain feature transformations (27 total features)
 │   ├── preprocessing.py         # Leakage-safe ColumnTransformer preprocessing pipeline
 │   ├── tuning.py                # Hyperparameter tuning with StratifiedKFold
 │   ├── train.py                 # Multi-model training, benchmarking & evaluation pipeline
+│   ├── evaluate.py              # Standalone Phase 5 evaluation & artifact generation
+│   ├── monitoring.py            # Telemetry, rolling audit buffer & drift detection
+│   ├── generate_screenshots.py  # Demonstration visual generation utility
+│   ├── sync_documents.py        # Academic document synchronization utility
 │   └── utils.py                 # Configuration loader, seed setter & logging utilities
 ├── tests/
-│   └── __init__.py              # Test suite initialization
-├── reports/
-│   └── figures/                 # Evaluation figures & artifact outputs
-├── preprocessing/
-│   └── feature_engineering.py   # Domain feature transformation functions
+│   ├── __init__.py              # Test suite initialization
+│   ├── test_pipeline.py         # Data loading, validation & preprocessing tests
+│   ├── test_evaluation.py       # Evaluation artifacts, report & figure tests
+│   ├── test_api.py              # FastAPI endpoints, validation & risk tier tests
+│   └── test_monitoring.py       # Telemetry logging & data drift detection tests
 ├── api/
-│   └── main.py                  # FastAPI application with prediction & SHAP explanation
+│   └── main.py                  # Hardened FastAPI service with SHAP & MLOps monitoring
 ├── app/
-│   └── streamlit_app.py         # Streamlit analytical user interface
-└── notebooks/
-    └── 01_EDA.ipynb             # Complete EDA, modeling & evaluation notebook
+│   └── streamlit_app.py         # Streamlit analytical user interface (3 tabs + offline fallback)
+├── Dockerfile.api               # Production container image for FastAPI service
+├── Dockerfile.app               # Production container image for Streamlit frontend
+├── docker-compose.yml           # Multi-service container orchestration with health checks
+├── .dockerignore                # Docker build context exclusions
+├── .gitignore                   # Version control exclusions (ignores caches, venvs, envs)
+├── requirements.txt             # Pinned production dependencies
+└── README.md                    # Comprehensive project documentation
 ```
 
 ---
@@ -229,31 +288,26 @@ Key patterns uncovered during data exploration:
 
 ## ⚙️ 12. Feature Engineering
 
-To capture non-linear dynamics and interaction effects, 6 domain features were engineered in `preprocessing/feature_engineering.py`:
+To capture complex banking relationships, non-linear dynamics, and customer activity patterns, domain features were engineered in [`src/feature_engineering.py`](file:///c:/Users/siddi/HCL_Project/src/feature_engineering.py), expanding the 10 raw features into **27 aligned numerical features**:
 
-```python
-def engineer_features(df):
-    df = df.copy()
-    
-    # 1. Zero-balance behavioral flag
-    df["IsZeroBalance"] = (df["Balance"] == 0).astype(int)
-    
-    # 2. Financial depth per relationship product
-    df["BalancePerProduct"] = df["Balance"] / df["NumOfProducts"]
-    
-    # 3. Non-linear polynomial age penalty
-    df["AgeSquared"] = df["Age"] ** 2
-    
-    # 4. Product engagement interaction
-    df["ActiveProductInteraction"] = df["IsActiveMember"] * df["NumOfProducts"]
-    
-    # 5. Age and activity interaction
-    df["AgeActivityInteraction"] = df["Age"] * df["IsActiveMember"]
-    
-    return df
-```
+1. **Financial Ratios & Capital Metrics**:
+   - `IsZeroBalance`: Binary indicator identifying dormant/checking accounts with zero balance.
+   - `BalancePerProduct`: Capital depth distributed across bank products (`Balance / NumOfProducts`).
+   - `BalanceToSalaryRatio`: Customer wealth commitment relative to annual earning power.
+   - `SalaryPerProduct`: Annual income divided by product count.
+2. **Non-Linear Demographics & Life-Stage Cohorts**:
+   - `AgeSquared`: Quadratic age penalty capturing accelerated churn risk in the 45–65 demographic.
+   - `AgeBin_Young` / `AgeBin_Senior`: Cohort flags identifying early career vs. retirement accounts.
+   - `TenurePerAge`: Relationship tenure normalized by age.
+   - `IsNewCustomer` / `IsLoyalCustomer`: Relationship maturity indicators (tenure $\le 1$ vs. tenure $\ge 7$).
+3. **Engagement & Interaction Signals**:
+   - `ActiveProductInteraction`: `IsActiveMember` $\times$ `NumOfProducts` (captures depth of active holdings).
+   - `AgeActivityInteraction`: `Age` $\times$ `IsActiveMember`.
+   - `LowCreditScore` / `HighCreditScore`: Bureau rating threshold indicators (< 580 vs. $\ge 750$).
+   - `HasManyProducts`: Flag identifying customers with 3 or 4 products (high churn propensity cohort).
+   - `EngagementScore`: Composite index combining credit card ownership, active membership, and multi-product relationships.
 
-Combined with one-hot encoded demographics, the final model trains on **16 aligned features** saved in `models/feature_names.pkl`.
+Combined with one-hot encoded demographics (`Geography_Germany`, `Geography_Spain`, `Gender_Male`), the final model trains on **27 aligned features** persisted in `models/feature_names.pkl`.
 
 ---
 
@@ -270,15 +324,16 @@ The notebook benchmarks multiple classification paradigms:
 
 ## 🏆 14. Final Model & Evaluation Metrics
 
-The **Feature-Engineered XGBoost Classifier** was selected as the final production model. Performance evaluated strictly on the **held-out test split**:
+The **Feature-Engineered Tuned XGBoost Classifier (`XGBoost_Tuned`)** was selected as the final production model. Performance evaluated strictly on the **held-out test split** ($N = 3,000$ accounts):
 
 | Metric | Score | Interpretation |
 | :--- | :---: | :--- |
 | **ROC-AUC** | **93.35%** | Exceptional ranking ability to separate churners from loyal clients |
-| **Accuracy** | **89.90%** | High overall classification accuracy on test records |
-| **Precision**| **80.47%** | High confidence when flagging a customer as at-risk (low false alarm rate) |
-| **Recall** | **66.67%** | Captures two-thirds of all actual account closures |
-| **F1-Score** | **72.92%** | Balanced harmonic mean between precision and recall on imbalanced target |
+| **Accuracy** | **87.37%** | High overall classification accuracy on test records |
+| **Precision**| **65.19%** | Positive Predictive Value when flagging customers as at-risk |
+| **Recall** | **81.70%** | Captures over four out of five actual account closures (500/612) |
+| **F1-Score** | **72.52%** | Robust harmonic mean balancing recall and precision on imbalanced data |
+| **Average Precision** | **81.68%** | Precision-Recall curve area (vs. 20.4% random baseline) |
 
 ---
 
@@ -296,47 +351,65 @@ RetainIQ integrates **SHAP (SHapley Additive exPlanations)** using `shap.TreeExp
 
 ---
 
-## 🔌 16. FastAPI Service & Health Check
+## 🔌 16. FastAPI Service & Production Endpoints
 
-The backend is implemented with **FastAPI** (`api/main.py`), offering real-time prediction and interactive API documentation at `http://127.0.0.1:8000/docs`.
+The backend is implemented with **FastAPI** (`api/main.py`), featuring Pydantic V2 schema validation, CORS middleware, model diagnostics, and interactive Swagger documentation at `http://127.0.0.1:8000/docs`.
 
-### Endpoints
+### Production Endpoints
 
-#### 1. API Health Check
+#### 1. API Welcome & Service Index
 - **Route**: `GET /`
-- **Purpose**: Verify that the API server is live and responsive.
-- **Response**:
-  ```json
-  {
-    "message": "RetainIQ API is running"
-  }
-  ```
+- **Purpose**: Verify service state, version, and endpoint directories.
 
-#### 2. Customer Exit Prediction & Explanation
+#### 2. System Health & Diagnostics
+- **Route**: `GET /health`
+- **Purpose**: Real-time health monitoring verifying model memory residency, feature count, and version.
+
+#### 3. Model Architecture & Benchmarks
+- **Route**: `GET /model/info`
+- **Purpose**: Retrieve serving model metadata, training timestamp, required feature schema, and test set performance scorecard.
+
+#### 4. Real-Time Single Customer Prediction & SHAP
 - **Route**: `POST /predict`
-- **Purpose**: Receive customer JSON data, execute feature engineering, run XGBoost inference, compute SHAP feature contributions, and return structured risk results.
+- **Purpose**: Score an individual customer profile, return calibrated exit probability, categorical status (`Likely to Exit` vs `Likely to Stay`), standardized risk tier (`Low`, `Moderate`, `High`), prediction confidence, and top ranked SHAP factor attributions.
+
+#### 5. High-Throughput Batch Scoring
+- **Route**: `POST /predict/batch`
+- **Purpose**: Evaluate up to 1,000 customer accounts in a vectorized manner with portfolio-level aggregate metrics.
+
+#### 6. Real-Time Inference Telemetry & Audit Stream
+- **Route**: `GET /monitoring/telemetry`
+- **Purpose**: Live health and telemetry reporting request volume, mean churn probability, risk tier counts, latency metrics, and rolling audit records.
+
+#### 7. Covariate Data Drift Shift Evaluation
+- **Route**: `POST /monitoring/drift`
+- **Purpose**: Compare current serving customer batches against training baseline distributions using standardized Z-scores to identify statistical shift.
 
 ---
 
 ## 💻 17. Streamlit Application
 
-The frontend dashboard (`app/streamlit_app.py`) provides an interactive interface for bank staff:
-- **Demographic Inputs**: Credit score, age, country, gender, tenure, product count.
-- **Financial Inputs**: Balance, salary, credit card ownership, active membership.
-- **Real-Time Visualizations**:
-  - Exit probability progress meter.
-  - Risk categorization banner (**Likely to Stay** vs **Likely to Exit**).
-  - Risk level badge (**Low**, **Moderate**, **High**).
-  - Customer snapshot key performance metrics.
-  - Top SHAP contributing factors with intuitive impact badges.
-  - Model information and held-out test evaluation benchmarks.
+The frontend dashboard (`app/streamlit_app.py`) provides an interactive interface with multi-tab analytical workflows:
+
+- **Tab 1: Single Customer Assessment**:
+  - Live customer demographic, relationship, and financial input forms.
+  - Exit probability progress meter, risk status banner, and calibrated risk tier badges.
+  - Individualized SHAP feature attributions ranking positive vs. negative churn drivers.
+  - Automatic fallback to local inference if FastAPI backend is offline.
+- **Tab 2: Batch Account Scoring**:
+  - Upload customer portfolio CSVs or load benchmark sample batches.
+  - Summary metrics: total accounts, flagged exits, high/moderate risk counts, mean portfolio churn rate.
+  - Downloadable scored CSV with predicted probabilities, status, and assigned risk tiers.
+- **Tab 3: Model Scorecard & Evaluation Artifacts**:
+  - Direct visualization of publication-quality Phase 5 evaluation figures (Confusion Matrix, ROC Curve, PR Curve, Feature Importance, SHAP Beeswarm, Model Comparison, and Threshold Sensitivity).
+  - Dynamic test set metrics pulled from `models/model_metadata.json`.
 
 ---
 
 ## 🚀 18. How to Run Locally
 
 ### Prerequisites
-- Python 3.10, 3.11, or 3.12 installed.
+- Python 3.10, 3.11, 3.12, or 3.13 installed.
 - Git (optional, for version control).
 
 ### Step 1: Clone or Navigate to Directory
@@ -364,19 +437,39 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 4: Launch FastAPI Backend
+### Step 4: Run Automated Test Suite
+Verify that all unit, pipeline, and API tests pass:
+```bash
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+### Step 5: Launch FastAPI Backend
 Open a terminal and start the Uvicorn server:
 ```bash
 uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 *The API is now live at `http://127.0.0.1:8000` (Swagger UI at `/docs`).*
 
-### Step 5: Launch Streamlit Frontend
+### Step 6: Launch Streamlit Frontend
 Open a separate terminal, ensure `.venv` is active, and launch Streamlit:
 ```bash
 streamlit run app/streamlit_app.py
 ```
 *The web application will open automatically in your browser at `http://localhost:8501`.*
+
+### Step 7: Launch via Docker Compose (Multi-Container Deployment)
+To run the entire multi-tier system with container isolation and health checks:
+```bash
+# Build and run containers in background
+docker-compose up -d --build
+
+# View active container status
+docker-compose ps
+
+# Access services:
+# FastAPI:  http://localhost:8000 (Swagger docs at http://localhost:8000/docs)
+# Streamlit: http://localhost:8501
+```
 
 ---
 
@@ -385,13 +478,13 @@ streamlit run app/streamlit_app.py
 ### Example Request (`POST /predict`)
 ```json
 {
-  "CreditScore": 650,
+  "CreditScore": 650.0,
   "Geography": "Germany",
   "Gender": "Female",
   "Age": 48.0,
-  "Tenure": 3,
+  "Tenure": 3.0,
   "Balance": 112000.0,
-  "NumOfProducts": 1,
+  "NumOfProducts": 1.0,
   "HasCrCard": 1,
   "IsActiveMember": 0,
   "EstimatedSalary": 85000.0
@@ -402,40 +495,50 @@ streamlit run app/streamlit_app.py
 ```json
 {
   "prediction": 1,
-  "exit_probability": 0.8142,
+  "exit_probability": 0.9504,
   "status": "Likely to Exit",
+  "risk_tier": "High",
+  "confidence": 95.04,
   "explanation": [
     {
       "feature": "Age",
-      "shap_value": 0.8942,
+      "display_name": "Customer Age",
+      "shap_value": 1.4168,
       "impact": "Increases exit likelihood"
     },
     {
       "feature": "Geography_Germany",
-      "shap_value": 0.5211,
-      "impact": "Increases exit likelihood"
-    },
-    {
-      "feature": "IsActiveMember",
-      "shap_value": 0.4318,
+      "display_name": "Resident in Germany",
+      "shap_value": 0.5657,
       "impact": "Increases exit likelihood"
     },
     {
       "feature": "NumOfProducts",
-      "shap_value": 0.3891,
+      "display_name": "Number of Financial Products",
+      "shap_value": 0.3994,
       "impact": "Increases exit likelihood"
     },
     {
-      "feature": "BalancePerProduct",
-      "shap_value": 0.1845,
+      "feature": "Gender_Male",
+      "display_name": "Customer Gender (Male)",
+      "shap_value": 0.3000,
       "impact": "Increases exit likelihood"
     },
     {
-      "feature": "CreditScore",
-      "shap_value": -0.0421,
-      "impact": "Decreases exit likelihood"
+      "feature": "EngagementScore",
+      "display_name": "Composite Engagement Index",
+      "shap_value": 0.2334,
+      "impact": "Increases exit likelihood"
+    },
+    {
+      "feature": "IsActiveMember",
+      "display_name": "Active Membership Status",
+      "shap_value": 0.1175,
+      "impact": "Increases exit likelihood"
     }
-  ]
+  ],
+  "model_name": "XGBoost_Tuned",
+  "timestamp": "2026-10-31T15:34:57.240056"
 }
 ```
 

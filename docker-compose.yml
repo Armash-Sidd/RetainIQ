@@ -1,0 +1,53 @@
+# ============================================================
+# RetainIQ - Multi-Container Service Orchestration
+# Phase 8 Production Deployment
+#
+# Usage:
+#   docker compose up --build
+# ============================================================
+
+services:
+  # ----------------------------------------------------------
+  # 1. FastAPI Real-Time Inference Gateway
+  # ----------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: retainiq-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MPLCONFIGDIR=/tmp
+    restart: unless-stopped
+    networks:
+      - retainiq-net
+
+  # ----------------------------------------------------------
+  # 2. Streamlit Analytical Decision Dashboard
+  # ----------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: retainiq-app
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - RETAINIQ_API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
+      - MPLCONFIGDIR=/tmp
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - retainiq-net
+
+networks:
+  retainiq-net:
+    driver: bridge
+

@@ -1,0 +1,28 @@
+# Version control & virtual environments
+.git
+.gitignore
+.venv
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Notebooks & IDE caches
+.ipynb_checkpoints
+notebooks/*.ipynb
+.vscode/
+.idea/
+.pytest_cache/
+
+# Academic documents
+*.docx
+*.pdf
+
+# Temporary testing & artifact caches
+test_*.png
+test_*.csv
+.gemini/
+logs/*.jsonl
+

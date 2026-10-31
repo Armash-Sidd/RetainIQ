@@ -67,6 +67,14 @@ temp/
 htmlcov/
 
 # ============================================================
+# Private Academic Reports, Viva Preparation & Archives
+# ============================================================
+docs/
+*.docx
+*.doc
+*.zip
+
+# ============================================================
 # RetainIQ Model Artifacts Whitelist
 # Explicitly keep trained models and serialized feature lists
 # ============================================================
