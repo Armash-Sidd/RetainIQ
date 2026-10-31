@@ -51,31 +51,31 @@ Traditional rule-based retention methods or retrospective exit interviews identi
 
 ## 📸 5. Application Screenshots & Demonstration Visuals
 
-The RetainIQ analytical interface and MLOps deployment provide a complete decision-support workflow for banking relationship teams:
+The RetainIQ analytical interface, backend API, and MLOps deployment provide a complete decision-support workflow for banking relationship teams:
 
 ### 1. Main Dashboard & Customer Profile Input
-![Main Dashboard - Customer Profile Input](screenshots/01_streamlit_dashboard_overview.png)
-*Interactive customer profile and account information forms allowing analysts to simulate customer demographics, credit attributes, tenure, and relationship characteristics.*
+![Main Dashboard - Customer Profile Input](screenshots/01_dashboard_inputs.png)
+*Real interactive customer profile and account information interface allowing analysts to simulate customer demographics, credit attributes, tenure, and relationship characteristics.*
 
-### 2. Low-Risk Customer Prediction & Retention Snapshot
-![Low-Risk Prediction](screenshots/02_low_risk_prediction.png)
-*Real-time risk scoring for a young active customer displaying calibrated exit probability (1.96%), categorical status (`Likely to Stay`), risk tier (`Low Risk`), and profile snapshots.*
+### 2. Prediction Result & Real-Time Risk Assessment
+![Prediction Result](screenshots/02_prediction_result.png)
+*Real-time risk scoring displaying calibrated exit probability, categorical status (`Likely to Stay` vs `Likely to Exit`), standardized risk tier (`Low Risk` / `High Risk`), confidence level, and profile snapshots.*
 
-### 3. High-Risk Customer Prediction & Urgent Intervention Alert
-![High-Risk Prediction](screenshots/03_high_risk_prediction.png)
-*Immediate critical alert for a high-value depositor showing calibrated exit probability (98.46%), categorical status (`Likely to Exit`), risk tier (`High Risk`), and relationship manager action protocols.*
+### 3. Local SHAP Explainability & Directional Attributions
+![SHAP Explainability](screenshots/03_shap_explainability.png)
+*Actual SHAP feature attributions ranking the individual drivers (such as customer age, country baseline, single-product risk, and member engagement) that increase or decrease churn likelihood for the evaluated customer.*
 
-### 4. Local SHAP Explainability & Directional Attributions
-![SHAP Explainability](screenshots/04_shap_explanation.png)
-*Local SHAP feature attributions ranking the individual drivers (age penalty, country baseline, single-product risk) that increase or decrease churn likelihood for the evaluated customer.*
+### 4. High-Throughput Batch Account Scoring
+![Batch Account Scoring](screenshots/04_batch_scoring.png)
+*Vectorized bulk portfolio scoring tab allowing analysts to upload CSV records or benchmark portfolios, displaying executive summary metrics and downloadable prioritized customer action tables.*
 
 ### 5. Model Scorecard & Evaluation Artifacts
 ![Model Performance Scorecard](screenshots/05_model_metrics_scorecard.png)
-*In-dashboard model scorecard highlighting verified performance metrics on the held-out test dataset (87.37% Accuracy, 65.19% Precision, 81.70% Recall, 72.52% F1, and 93.35% ROC-AUC) alongside confusion matrix and cross-validation benchmarks.*
+*In-dashboard model scorecard highlighting verified performance metrics on the held-out test dataset (87.37% Accuracy, 65.19% Precision, 81.70% Recall, 72.52% F1, and 93.35% ROC-AUC) alongside embedded Phase 5 evaluation figures.*
 
 ### 6. FastAPI Interactive OpenAPI Swagger Documentation (`/docs`)
 ![FastAPI Swagger UI](screenshots/06_fastapi_swagger_docs.png)
-*Auto-generated interactive Swagger UI exposing root index, system health, model metadata, single prediction, batch scoring, telemetry, and data drift monitoring endpoints.*
+*Live interactive Swagger UI (`http://127.0.0.1:8000/docs`) exposing root index, system health, model metadata, single prediction, batch scoring, telemetry, and data drift monitoring endpoints.*
 
 ### 7. Real-Time Prediction API Request & Response Body
 ![Predict API Response](screenshots/07_predict_api_response.png)
