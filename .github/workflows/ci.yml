@@ -50,22 +50,9 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Set Up Docker Buildx
-        uses: actions/setup-buildx-action@v3
-
       - name: Build FastAPI Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.api
-          push: false
-          tags: retainiq-api:latest
+        run: docker build -f Dockerfile.api -t retainiq-api:latest .
 
       - name: Build Streamlit Dashboard Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.app
-          push: false
-          tags: retainiq-app:latest
+        run: docker build -f Dockerfile.app -t retainiq-app:latest .
 
